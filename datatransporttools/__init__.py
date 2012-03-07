@@ -1,6 +1,6 @@
 import sys
 
-__all__ = ["csv_","excel","mssql","mysql","odbc","sqlalchemy"]
+__all__ = ["csv_","mysql","odbc","sqlalchemy","iterable"]
 
 def transfer(inputobj, outputobj, include_headers=False):
     inputobj.prep_read()
