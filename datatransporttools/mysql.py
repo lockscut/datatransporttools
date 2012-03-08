@@ -1,17 +1,23 @@
 from transport import *
 from odbc import ODBCTransport
+from batchedodbc import BatchedODBCTransport
 
-class MySQLTable(ODBCTransport):
-    insert_str = None
+class SharedMySQL(object):
+
+    def __get_quoted_table(self):
+        if self.schema and self.schema != 'dbo':
+            raise Exception("MySQL does not support schemas?")
+        return "`%s`" % self.table
+
+    @classmethod
+    def __from_values(cls, server, database, username, password, table, truncate=False, *args, **kwargs):
+        c = 'DRIVER=mysql;SERVER=%s;DATABASE=%s;UID=%s;PWD=%s' % (server, database, username, password)   
+        # ODBCTransport def => def __init__(self, conn, table, schema='dbo', truncate=False, *args, **kwargs): 
+        return cls(c, table=table, schema=None, truncate=truncate, *args, **kwargs) 
     
-    def get_insert_str(self, data):
-        if not self.insert_str:
-            insert_str = 'INSERT INTO %s VALUES(' % self.table
-            for i in range (0, len(data)):
-                insert_str = insert_str + '?, '
-            insert_str = insert_str.rstrip(', ') + ')'
-            self.insert_str = insert_str
-        return self.insert_str
+
+class MySQLTable(SharedMySQL, BatchedODBCTransport):
+    pass
     
-    def put_record(self, data):
-        self._writer.execute(self.get_insert_str(data), data)
+class MySQLTableNoBatching(SharedMySQL, ODBCTransport):
+    pass

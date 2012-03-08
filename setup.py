@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name = "datatransporttools",
-    version = "0.1.2",
+    version = "0.2.0",
     author = "Zakir Durumeric",
     author_email = "zakird@gmail.com",
     description = "A light-weight python framework for transforming datasets between common sources/destinations.",

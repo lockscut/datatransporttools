@@ -5,9 +5,6 @@ class Iterable(DataTransport):
         DataTransport.__init__(self)
         assert hasattr(iterable, '__iter__')   
         self.iterable = iterable
-
-    def put_record(self, data):
-        self._writer.writerow(data)
         
     def get_record(self):
         for r in self.iterable:

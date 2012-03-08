@@ -1,10 +1,11 @@
+import os.path
 from transport import *
 from odbc import ODBCTransport
 
 class AccessTable(ODBCTransport):
-    def __init__(self, file_path, table, truncate=False):
+    def __init__(self, file_path, *args, **kwargs):
         connstr = "Driver={Microsoft Access Driver (*.mdb)};Dbq=%s" % file_path
-        ODBCTransport.__init__(self, conn=connstr, table=table, truncate=truncate)
+        ODBCTransport.__init__(self, conn=connstr, *args, **kwargs)
         
     def prep_read(self):
         if not self._reader:
@@ -13,6 +14,7 @@ class AccessTable(ODBCTransport):
 
 class AccessQuery(ODBCTransport):
     def __init__(self, file_path, query):
+        assert os.path.exists(file_path)
         connstr = "Driver={Microsoft Access Driver (*.mdb)};Dbq=%s" % file_path
         ODBCTransport.__init__(self, conn=connstr, table=None)
         self.query = query
@@ -21,7 +23,3 @@ class AccessQuery(ODBCTransport):
         if not self._reader:
             self._reader = self.conn.cursor()
             self._reader.execute(self.query)
-
-    def get_record(self):
-        for row in self._reader.fetchall():
-            yield tuple(row)
