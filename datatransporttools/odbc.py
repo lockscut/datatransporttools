@@ -22,7 +22,6 @@ class ODBCTransport(DataTransport):
         for i in range (0, len(data)):
             insert_str = insert_str + '?, '
         insert_str = insert_str.rstrip(', ') + ')'
-        insert_str = insert_str        
         return insert_str      
 
     def prep_read(self):
