@@ -22,6 +22,7 @@ class SharedPostgreSQL(object):
             kwargs['server'] = 'localhost'
         if 'port' not in kwargs:
             kwargs['port'] = 5432
+        return cls(cls.make_connstr(kwargs))
 
     @classmethod
     def by_value_ansi(cls, **kwargs):
