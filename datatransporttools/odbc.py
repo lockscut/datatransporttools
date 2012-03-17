@@ -34,7 +34,6 @@ class ODBCTransport(DataTransport):
             self._writer = self.conn.cursor()
             if not hasattr(self, 'get_insert_str'):
                 raise Exception("Subclasses of ODBCTransport must define get_insert_str method.")
-            self.insert_str = self.get_insert_str()  
             if self.truncate:
                 sql_s = "DELETE FROM %s" % self.get_quoted_table()
                 self._writer.execute(sql_s)

@@ -4,7 +4,7 @@ from batchedodbc import BatchedODBCTransport
 
 class SharedPostgreSQL(object):
 
-    def __get_quoted_table(self):
+    def get_quoted_table(self):
         if self.schema:
             return '"%s"."%s"' % (self.schema, self.table)
         else:
@@ -12,27 +12,27 @@ class SharedPostgreSQL(object):
 
     @classmethod
     def make_connstr(self, **kwargs):
-        return ';'.join(map(lambda k,v: "k=v" % (k,v)))
+        return ';'.join(map(lambda (k,v): "%s=%s" % (str(k),str(v)), kwargs.iteritems()))
 
     @classmethod
-    def by_value(cls, **kwargs):
-        if any(map(lambda k: k in kwargs, ('driver', 'username', 'password', 'database'))):
+    def by_value(cls, table, driver, **kwargs):
+        if any(map(lambda k: k not in kwargs, ('username', 'password', 'database'))):
             raise Exception("must specify username, password, and database")
         if 'server' not in kwargs:
             kwargs['server'] = 'localhost'
         if 'port' not in kwargs:
             kwargs['port'] = 5432
-        return cls(cls.make_connstr(kwargs))
+        s = "Driver=%s;%s" % (driver, cls.make_connstr(**kwargs))
+        print s
+        return cls(cls.make_connstr(**kwargs), table)
 
     @classmethod
-    def by_value_ansi(cls, **kwargs):
-        kwargs['driver'] = '{PostgreSQL ANSI}'
-        return cls.by_value(**kwargs)
+    def by_value_ansi(cls, table, **kwargs):
+        return cls.by_value(table, '{PostgreSQL ANSI}', **kwargs)
 
     @classmethod
-    def by_value_unicode(cls, **kwargs):
-        kwargs['driver'] = '{PostgreSQL Unicode}'
-        return cls.by_value(**kwargs)
+    def by_value_unicode(cls, table, **kwargs):
+        return cls.by_value(tabl, '{PostgreSQL Unicode}', **kwargs)
 
 
 class PostgreSQLTable(SharedPostgreSQL, BatchedODBCTransport):

@@ -9,7 +9,7 @@ class BatchedODBCTransport(ODBCTransport):
         self.__batch_size = kwargs.get('batch_size', self.DEFAULT_BATCH_SIZE)
         
     def __flush(self):  
-        self._writer.executemany(self.get_insert_str(data), self.__cache)
+        self._writer.executemany(self.get_insert_str(self.__cache[0]), self.__cache)
         self.__cache = []
         
     def close(self):
