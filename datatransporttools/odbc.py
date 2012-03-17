@@ -2,7 +2,7 @@ import pyodbc
 from transport import *
 
 class ODBCTransport(DataTransport):
-    def __init__(self, conn, table, schema='dbo', truncate=False, *args, **kwargs):
+    def __init__(self, conn, table, schema=None, truncate=False, *args, **kwargs):
         DataTransport.__init__(self, *args, **kwargs)
         if type(conn) == str:
             self.conn = pyodbc.connect(conn)

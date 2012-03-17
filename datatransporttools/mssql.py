@@ -5,7 +5,10 @@ from batchedodbc import BatchedODBCTransport
 class SharedMSSQL(object):
 
     def get_quoted_table(self):
-        return "[%s].[%s]" % (self.schema, self.table)
+        if self.schema:
+            return "[%s].[%s]" % (self.schema, self.table)
+        else:
+            return "[%s]" % self.table
 
     def prep_write(self):
         if self.truncate:
