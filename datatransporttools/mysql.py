@@ -4,7 +4,7 @@ from batchedodbc import BatchedODBCTransport
 
 class SharedMySQL(object):
 
-    def __get_quoted_table(self):
+    def get_quoted_table(self):
         if self.schema:
             raise Exception("MySQL does not support schemas?")
         return "`%s`" % self.table
