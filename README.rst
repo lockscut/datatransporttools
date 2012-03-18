@@ -3,17 +3,17 @@ Data Transport Tools
 
 A lightweight Python toolkit designed to allow for easy, transactional conversion of data between common data storage mediums. Currently supports:
 
-    * ODBC Tables, Queries (batching supported)
-    
-        * MySQL
-        * PostgreSQL
-        * Microsoft SQL Server
-        * Microsoft Access
-   
-    * Delimited Files (python csv library)
-    * Microsoft Excel
-    * Python Iterators
-    * SQLAlchemy Constructions
+ * ODBC Tables, Queries (batching supported)
+ 
+   * MySQL
+   * PostgreSQL
+   * Microsoft SQL Server
+   * Microsoft Access
+
+ * Delimited Files (python csv library)
+ * Microsoft Excel
+ * Python Iterators
+ * SQLAlchemy Constructions
 
 Example::
 
